@@ -1,11 +1,11 @@
-const = faker = require(faker);
+const faker = require('faker');
 
-let firstName = faker.internet.email;
-let lastName = faker.internet.password;
+var fakerEmail = faker.internet.email();
+var fakerpassword = faker.internet.password();
 
 describe('Login module', () => {
 
-  it.only('GA-19 : Login page layout ', () => {
+  it('GA-19 : Login page layout ', () => {
     cy.visit('/')
     cy.get('.nav-link').contains('Login').click()
     cy.get('#email').should('be.visible')
@@ -13,7 +13,7 @@ describe('Login module', () => {
     cy.get('[type=submit]').should('be.visible')
   })
 
-  it('GA-28 : Login - valid data ', () => {
+  it('GA-28 : Login - valid data, GA-32 : User is logged  ', () => {
     cy.visit('/')
     cy.get('.nav-link').contains('Login').click()
     cy.get('#email').type('dusan_master@hotmail.com')
@@ -26,7 +26,7 @@ describe('Login module', () => {
   it('GA-22 : Login - invalid data - username ', () => {
     cy.visit('/')
     cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').type('4444dusan_master@hotmail.com')
+    cy.get('#email').type(fakerEmail)
     cy.get('form > :nth-child(2)').type('Testcase1')
     cy.get('[type=submit]').click()
     cy.get('.alert').should('be.visible')
@@ -38,10 +38,22 @@ describe('Login module', () => {
     cy.visit('/')
     cy.get('.nav-link').contains('Login').click()
     cy.get('#email').type('dusan_master@hotmail.com')
-    cy.get('form > :nth-child(2)').type('444Testcase1')
+    cy.get('form > :nth-child(2)').type(fakerpassword)
     cy.get('[type=submit]').click()
     cy.get('.alert').should('be.visible')
                     .should('have.text', 'Bad Credentials')   
                     .should('have.class', 'alert') 
   })
+
+  it('GA-26 : Login - invalid data - username and password ', () => {
+    cy.visit('/')
+    cy.get('.nav-link').contains('Login').click()
+    cy.get('#email').type(fakerEmail)
+    cy.get('form > :nth-child(2)').type(fakerpassword)
+    cy.get('[type=submit]').click()
+    cy.get('.alert').should('be.visible')
+                    .should('have.text', 'Bad Credentials')   
+                    .should('have.class', 'alert') 
+  })
+
 })
