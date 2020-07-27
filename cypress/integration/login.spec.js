@@ -1,3 +1,7 @@
+import {EMAIL} from '../fixtures/constants'
+import {authPage} from '../page_object/login.page'
+import {randomEmail} from '../utils/'
+
 const faker = require('faker');
 
 var fakerEmail = faker.internet.email();
@@ -5,53 +9,85 @@ var fakerpassword = faker.internet.password();
 
 describe('Login module', () => {
 
-  it('GA-19 : Login page layout ', () => {
-    cy.visit('/')
-    cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').should('be.visible')
-    cy.get('form > :nth-child(2)').should('be.visible')
-    cy.get('[type=submit]').should('be.visible')
+  beforeEach(() => {
+    cy.visit('/login')
+    cy.server()
+    cy.route(Cypress.env('apiUrl') + '/galleries?page=1&term=').as('galleries')
   })
 
-  it('GA-28 : Login - valid data, GA-32 : User is logged  ', () => {
-    cy.visit('/')
-    cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').type('dusan_master@hotmail.com')
-    cy.get('form > :nth-child(2)').type('Testcase1')
-    cy.get('[type=submit]').click()
-    cy.wait(1000)
+  it('GA-19 : Login page layout ', () => {
+//  cy.visit('/')
+    //cy.get('.nav-link').contains('Login').click()
+    authPage.email.should('be.visible')
+    authPage.password.should('be.visible')
+    authPage.submit.should('be.visible')
+  })
+
+  it.only('GA-28 : Login - valid data, GA-32 : User is logged  ', () => {
+//  cy.visit('/')
+    //cy.get('.nav-link').contains('Login').click()
+    authPage.login(EMAIL.EXISTING, EMAIL.PASSWORD)
+    cy.wait('@galleries')
+    // authPage.email.type(EMAIL.EXISTING)
+    // authPage.password.type(EMAIL.PASSWORD)
+    // authPage.submit.click()
+    //cy.wait(1000)
     cy.get('.nav-link').contains('Logout').should('be.visible')    
   })
 
-  it('GA-22 : Login - invalid data - username ', () => {
-    cy.visit('/')
-    cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').type(fakerEmail)
-    cy.get('form > :nth-child(2)').type('Testcase1')
-    cy.get('[type=submit]').click()
-    cy.get('.alert').should('be.visible')
+  it.only('GA-22 : Login - invalid data - username ', () => {
+//  cy.visit('/')
+    //cy.get('.nav-link').contains('Login').click()
+    authPage.login(randomEmail(), EMAIL.PASSWORD)
+    //authPage.email.type(fakerEmail)
+    //authPage.password.type(EMAIL.PASSWORD)
+    //authPage.submit.click()
+    authPage.alert.should('be.visible')
                     .should('have.text', 'Bad Credentials')   
                     .should('have.class', 'alert') 
   })
+
+  it('Login - invalid data - empty username ', () => {
+    //  cy.visit('/')
+        //cy.get('.nav-link').contains('Login').click()
+        authPage.login('', EMAIL.PASSWORD)
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.submit.click()
+        // authPage.email.then(($input) => {
+        expect($input[0].validationMessage).to.eq('Please fill out this field.')
+        })
+    
 
   it('GA-25 : Login - invalid data - password ', () => {
-    cy.visit('/')
-    cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').type('dusan_master@hotmail.com')
-    cy.get('form > :nth-child(2)').type(fakerpassword)
-    cy.get('[type=submit]').click()
-    cy.get('.alert').should('be.visible')
+//  cy.visit('/')
+    //cy.get('.nav-link').contains('Login').click()
+    authPage.login(EMAIL.EXISTING, fakerpassword)
+    // authPage.email.type(EMAIL.EXISTING)
+    // authPage.password.type(fakerpassword)
+    // authPage.submit.click()
+    authPage.alert.should('be.visible')
                     .should('have.text', 'Bad Credentials')   
                     .should('have.class', 'alert') 
   })
 
+  it('Login - invalid data - empty password ', () => {
+    //  cy.visit('/')
+        //cy.get('.nav-link').contains('Login').click()
+        authPage.login(EMAIL.EXISTING, '')
+        // authPage.email.type(EMAIL.EXISTING)
+        // authPage.submit.click()
+        // authPage.password.then(($input) => {
+        expect($input[0].validationMessage).to.eq('Please fill out this field.')
+      })
+    
   it('GA-26 : Login - invalid data - username and password ', () => {
-    cy.visit('/')
-    cy.get('.nav-link').contains('Login').click()
-    cy.get('#email').type(fakerEmail)
-    cy.get('form > :nth-child(2)').type(fakerpassword)
-    cy.get('[type=submit]').click()
-    cy.get('.alert').should('be.visible')
+// cy.visit('/')
+    //cy.get('.nav-link').contains('Login').click()
+    authPage.login(fakerEmail, fakerpassword)
+    // authPage.email.type(fakerEmail)
+    // authPage.password.type(fakerpassword)
+    // authPage.submit.click()
+    authPage.alert.should('be.visible')
                     .should('have.text', 'Bad Credentials')   
                     .should('have.class', 'alert') 
   })

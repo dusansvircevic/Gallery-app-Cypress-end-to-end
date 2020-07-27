@@ -1,3 +1,4 @@
+import {EMAIL} from '../fixtures/constants'
 const faker = require('faker');
 
 var fakerFirstName = faker.name.firstName();
@@ -116,9 +117,9 @@ describe('Register module', () => {
         cy.visit('/register')
         cy.get('#first-name').type('test')
         cy.get('#last-name').type('test')
-        cy.get('#email').type('ruzictam@gmail.com')
-        cy.get('#password').type('testtest2')
-        cy.get('#password-confirmation').type('testtest2')
+        cy.get('#email').type(EMAIL.EXISTING
+        cy.get('#password').type(EMAIL.PASSWORD)
+        cy.get('#password-confirmation').type(EMAIL.PASSWORD)
         cy.get('[type=checkbox]').click()
         cy.get('[type=submit]').click()
         cy.get('.alert').should('be.visible')
