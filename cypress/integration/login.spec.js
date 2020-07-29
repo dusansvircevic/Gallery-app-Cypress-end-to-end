@@ -23,7 +23,7 @@ describe('Login module', () => {
     authPage.submit.should('be.visible')
   })
 
-  it.only('GA-28 : Login - valid data, GA-32 : User is logged  ', () => {
+  it('GA-28 : Login - valid data, GA-32 : User is logged  ', () => {
 //  cy.visit('/')
     //cy.get('.nav-link').contains('Login').click()
     authPage.login(EMAIL.EXISTING, EMAIL.PASSWORD)
@@ -35,7 +35,7 @@ describe('Login module', () => {
     cy.get('.nav-link').contains('Logout').should('be.visible')    
   })
 
-  it.only('GA-22 : Login - invalid data - username ', () => {
+  it('GA-22 : Login - invalid data - username ', () => {
 //  cy.visit('/')
     //cy.get('.nav-link').contains('Login').click()
     authPage.login(randomEmail(), EMAIL.PASSWORD)
@@ -48,16 +48,25 @@ describe('Login module', () => {
   })
 
   it('Login - invalid data - empty username ', () => {
-    //  cy.visit('/')
+        //  cy.visit('/')
         //cy.get('.nav-link').contains('Login').click()
-        authPage.login('', EMAIL.PASSWORD)
-        // authPage.password.type(EMAIL.PASSWORD)
-        // authPage.submit.click()
-        // authPage.email.then(($input) => {
+        authPage.password.type(EMAIL.PASSWORD)
+        authPage.submit.click()
+        authPage.email.then(($input) => {
         expect($input[0].validationMessage).to.eq('Please fill out this field.')
         })
-    
+        })
 
+  it('Login - invalid data - empty password ', () => {
+        //cy.visit('/')
+        //cy.get('.nav-link').contains('Login').click()
+        authPage.email.type(EMAIL.EXISTING)
+        authPage.submit.click()
+        authPage.password.then(($input) => {
+        expect($input[0].validationMessage).to.eq('Please fill out this field.')
+        })
+        })    
+    
   it('GA-25 : Login - invalid data - password ', () => {
 //  cy.visit('/')
     //cy.get('.nav-link').contains('Login').click()
@@ -69,17 +78,7 @@ describe('Login module', () => {
                     .should('have.text', 'Bad Credentials')   
                     .should('have.class', 'alert') 
   })
-
-  it('Login - invalid data - empty password ', () => {
-    //  cy.visit('/')
-        //cy.get('.nav-link').contains('Login').click()
-        authPage.login(EMAIL.EXISTING, '')
-        // authPage.email.type(EMAIL.EXISTING)
-        // authPage.submit.click()
-        // authPage.password.then(($input) => {
-        expect($input[0].validationMessage).to.eq('Please fill out this field.')
-      })
-    
+ 
   it('GA-26 : Login - invalid data - username and password ', () => {
 // cy.visit('/')
     //cy.get('.nav-link').contains('Login').click()

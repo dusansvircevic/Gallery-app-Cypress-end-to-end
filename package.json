@@ -13,5 +13,13 @@
   },
   "dependencies": {
     "faker": "^4.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dusansvircevic/cypress-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dusansvircevic/cypress-test/issues"
+  },
+  "homepage": "https://github.com/dusansvircevic/cypress-test#readme"
 }
