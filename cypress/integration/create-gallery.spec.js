@@ -30,8 +30,8 @@ describe('Create gallery module', () => {
     // cy.get('[type=submit]').contains('Submit').click()
   })
 
-  it('My gallery - pagination - load more', () => {
-      for(var i=2;i<=11;i++){
+  it.only('My gallery - pagination - load more', () => {
+      for(var i=2;i<=10;i++){
         cy.visit('/create')
         gallPage.createGallery('Create Gallery', 'Test', 'Test galerija', fakerImage);
         cy.log('Gallery = ' + i)
