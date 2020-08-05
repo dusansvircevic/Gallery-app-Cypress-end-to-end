@@ -23,8 +23,8 @@ describe('Route all', () => {
     //       expect(resp.body).to.have.property('token_type')
     //       localStorage.setItem('token', resp.body.access_token)
     //   })
-        //cy.visit('/')
-        cy.wait('@stubing')
+        cy.visit('/')
+         cy.wait('@stubing')
         cy.get('@stubing').its('response').then((resp)=>{
             cy.request({
                 method: 'DELETE',
@@ -37,5 +37,8 @@ describe('Route all', () => {
                 })
             })
         })
+
+        cy.deleteBackend(EMAIL.EXISTING, EMAIL.PASSWORD)
+
 
 })

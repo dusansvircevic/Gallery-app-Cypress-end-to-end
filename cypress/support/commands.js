@@ -45,3 +45,19 @@ Cypress.Commands.add('loginBackend', (mejl, pasvord) =>{
        cy.visit('/')
     }) 
   })
+
+
+  Cypress.Commands.add('deleteBackend', (useCaseID) =>{
+    cy.request({
+          method: 'DELETE',
+          url:`${Cypress.env('apiUrl')}/galleries/${useCaseID}`,
+          form: true,
+          followRedirect: true,
+          headers: {
+              authorization: `Bearer ${window.localStorage.getItem('token')}`
+          }
+          })
+      }
+  )
+
+

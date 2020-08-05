@@ -14,19 +14,19 @@ describe('Route all', () => {
         cy.wait('@mojaGalerija')
         cy.get('@mojaGalerija').its('response').then((resp)=>{
 
-            //var elementi = document.getElementsByClassName('box-title').length;
-            //cy.log(elementi);
-            for(var i=0; i<10; i++){
+            for(var i=0; i<9; i++){
             let useCaseID = resp.body.galleries[i].id
-            cy.request({
-                method: 'DELETE',
-                url:`${Cypress.env('apiUrl')}/galleries/${useCaseID}`,
-                form: true,
-                followRedirect: true,
-                headers: {
-                    authorization: `Bearer ${window.localStorage.getItem('token')}`
-                }
-                })
+            cy.deleteBackend(useCaseID)
+
+            // cy.request({
+            //     method: 'DELETE',
+            //     url:`${Cypress.env('apiUrl')}/galleries/${useCaseID}`,
+            //     form: true,
+            //     followRedirect: true,
+            //     headers: {
+            //         authorization: `Bearer ${window.localStorage.getItem('token')}`
+            //     }
+            //     })
             }
 
             })
