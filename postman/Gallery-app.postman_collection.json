@@ -1,0 +1,686 @@
+{
+	"info": {
+		"_postman_id": "665acd18-6bb3-43fe-b830-048e5ec25dbe",
+		"name": "App gallery ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "914ea009-2c13-4e05-ab60-38ae734865d7",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(jsonData.access_token);",
+							"",
+							"pm.environment.set(\"galerija_token\", jsonData.access_token);",
+							"",
+							"pm.environment.set(\"user_id\", jsonData.user_id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"access_token\": { \"type\": \"string\" },",
+							"        \"token_type\": { \"type\": \"string\" },",
+							"        \"expires_in\": { \"type\": \"number\" },",
+							"        \"user_id\": { \"type\": \"number\" },",
+							"    },",
+							"    \"required\": [\"access_token\", \"expires_in\", \"token_type\", \"user_id\"]",
+							"};",
+							"",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"dusan_master@hotmail.com\",\"password\":\"Testcase1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login-another-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "449ff9aa-51e9-4456-95cb-d2bcd1e3cfa2",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(jsonData.access_token);",
+							"",
+							"pm.environment.set(\"galerija_token_drugi_user\", jsonData.access_token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"testmaster@test.com\",\"password\":\"Testcase1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "My-galleries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f88b04cc-6d83-405f-913f-ea8fa3f26daa",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{galerija_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/my-galleries?page=1&term=",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"my-galleries"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "term",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bad8bb7-bc61-45dc-9978-a410c6911623",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}galleries?page=1&term=test",
+					"host": [
+						"{{url}}galleries"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "term",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-gallery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7712e09-198c-4cdf-8ed3-c264a60af4a5",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Gallery ID=\" + jsonData.id] = typeof jsonData.id == 'number';",
+							"",
+							"pm.environment.set(\"galerija_id\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{galerija_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Mountain view2\",\"description\":\"Mountains all over the world\",\"images\":[\"http://pngimg.com/uploads/mountain/mountain_PNG18.png\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/galleries?page=1&term=",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"galleries"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "term",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-gallery Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21193508-6b4a-4e45-aec6-6eb370bf65e1",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Gallery ID=\" + jsonData.id] = typeof jsonData.id == 'number';",
+							"",
+							"pm.environment.set(\"galerija_id\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Opis sadrzi string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Mountains all over the world\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{galerija_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Mountain view2\",\"description\":\"Mountains all over the world {{$randomInt}}\",\"images\":[\"http://pngimg.com/uploads/mountain/mountain_PNG18.png\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/galleries?page=1&term=",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"galleries"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "term",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit-gallery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3619333b-4df4-435e-8395-87956e198914",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Gallery ID=\" + jsonData.id] = typeof jsonData.id == 'number';",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{galerija_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Mountain view11111\",\"description\":\"Mountains all over the world\",\"images\":[\"http://pngimg.com/uploads/mountain/mountain_PNG18.png\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/galleries/{{galerija_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"galleries",
+						"{{galerija_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "295ed1a7-0f2a-4706-b0c7-a0314148288f",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Comment ID=\" + jsonData[0].id] = typeof jsonData[0].id == 'number';",
+							"pm.environment.set(\"komentar_id\", jsonData[0].id);",
+							"var user = pm.environment.get(\"user_id\");",
+							"console.log(user);",
+							"var realUser = jsonData[0].user_id;",
+							"console.log(realUser);",
+							"if(user === realUser){",
+							"    console.log('user i realUser su isti')",
+							"}else{",
+							"    console.log('user i realUser nisu isti')",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{galerija_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"gallery_id\":{{galerija_id}},\"body\":\"test2\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/comments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3149fc92-fbbc-4bb4-82ba-d12ba518b363",
+						"exec": [
+							"",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{galerija_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/comments/{{komentar_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"comments",
+						"{{komentar_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-gallery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b4bea2d9-7fdd-426b-9ac5-b103fcdd2be4",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{galerija_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/galleries/{{galerija_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"galleries",
+						"{{galerija_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-gallery-another-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffc45177-d9b6-4c0d-9307-e5452244b4f7",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{galerija_token_drugi_user}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/galleries/{{galerija_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"galleries",
+						"{{galerija_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f15e060e-17c6-469b-94f9-ac2974ef9225",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0d70a283-e10b-4dce-9378-5c8fb66098a1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
